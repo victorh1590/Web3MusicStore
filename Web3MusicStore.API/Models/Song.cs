@@ -14,7 +14,7 @@ public class Song
 
   [Required]
   [Column(TypeName = "TIME")]
-  public SongTime Duration { get; set; } = default!;
+  public TimeSpan Duration { get; set; } = default!;
 
   [Required]
   public ICollection<Album> Album { get; set; } = default!;
