@@ -3,6 +3,7 @@ namespace Web3MusicStore.API.Models;
 
 public enum Genre
 {
+    Other,
     Pop,
     [Description("Hip Hop")] HipHop,
     Blues,

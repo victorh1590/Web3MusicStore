@@ -6,7 +6,7 @@ namespace Web3MusicStore.API.Models;
 public class Song
 {
   [Key]
-  public int Id { get; set; } = default!;
+  public int Id { get; set; }
 
   [Required]
   [Column(TypeName = "NVARCHAR(100)")]
@@ -14,12 +14,12 @@ public class Song
 
   [Required]
   [Column(TypeName = "TIME")]
-  public TimeSpan Duration { get; set; } = default!;
+  public TimeSpan Duration { get; set; }
 
   [Required]
-  public ICollection<Album> Album { get; set; } = default!;
-
+  [ForeignKey("FK_AlbumId")]
+  public int AlbumId { get; set; }
+  
   [Required]
-  [ForeignKey("AlbumId")]
-  public int AlbumId { get; set; } = default!;
+  public Album Album { get; set; } = default!;
 }
