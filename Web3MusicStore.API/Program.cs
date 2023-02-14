@@ -10,6 +10,7 @@ builder.Services.AddDbContext<StoreDbContext>(options =>
       options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
     }
 );
+builder.Services.AddScoped<IRepository<Album>, AlbumRepository>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
