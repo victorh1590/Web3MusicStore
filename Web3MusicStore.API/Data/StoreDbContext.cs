@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using Web3MusicStore.API.Models;
 
-namespace Web3MusicStore.API.Models;
+namespace Web3MusicStore.API.Data;
 
 public class StoreDbContext : DbContext
 {

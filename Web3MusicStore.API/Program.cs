@@ -1,5 +1,7 @@
 using Web3MusicStore.API.Models;
 using Microsoft.EntityFrameworkCore;
+using Web3MusicStore.API.Data;
+using Web3MusicStore.API.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +12,7 @@ builder.Services.AddDbContext<StoreDbContext>(options =>
       options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
     }
 );
-builder.Services.AddScoped<IRepository<Album>, AlbumRepository>();
+builder.Services.AddScoped<IAlbumRepository, AlbumRepository>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

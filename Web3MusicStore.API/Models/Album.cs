@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Web3MusicStore.API.Models.Enums;
 
 namespace Web3MusicStore.API.Models;
 

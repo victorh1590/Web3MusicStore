@@ -1,5 +1,5 @@
 using System.ComponentModel;
-namespace Web3MusicStore.API.Models;
+namespace Web3MusicStore.API.Models.Enums;
 
 public enum Genre
 {
