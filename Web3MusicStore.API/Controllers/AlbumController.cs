@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Web3MusicStore.API.Data.Repositories;
+using Web3MusicStore.API.Data.UnitOfWork;
 using Web3MusicStore.API.Models;
 
 namespace Web3MusicStore.API.Controllers;
@@ -11,9 +13,9 @@ public class AlbumController : ControllerBase
     
     private readonly ILogger<AlbumController> _logger;
 
-    private readonly IRepository<Album> _albumRepository;
+    private readonly IAlbumRepository _albumRepository;
 
-    public AlbumController(ILogger<AlbumController> logger, IRepository<Album> albumRepository)
+    public AlbumController(ILogger<AlbumController> logger, IAlbumRepository albumRepository)
     {
         _logger = logger;
         _albumRepository = albumRepository;
@@ -23,41 +25,38 @@ public class AlbumController : ControllerBase
     // GET
     [HttpGet]
     [Route("")]
-    public async IAsyncEnumerable<Album> GetAlbums()
+    public async Task<ActionResult> GetAlbums()
     {
-        await foreach (var album in _albumRepository.GetAllAsAsyncEnumerable())
-        {
-            yield return album;
-        }
+        var albums = await _albumRepository.GetRandomPagesAsync();
+        if(albums != null) return Ok(albums);
+        return UnprocessableEntity("Page requested is out of range.");
     }
     
     [HttpGet]
     [Route("{id:int}")]
-    public async Task<ActionResult<Album>> GetAlbumById(int id)
+    public async Task<ActionResult> GetAlbumById(int id)
     {
-        var queryResult = await _albumRepository.GetAsync(item => item.Id == id);
-        var album = queryResult?.FirstOrDefault();
-        if (album != null)
-        {
-            return Ok(album);
-        }
+        var album = await _albumRepository.FindById(id);
+        if (album != null) return Ok(album);
         return NotFound();
     }
 
     [HttpPost]
     [Route("")]
-    public async Task<ActionResult<Album>> PostAlbum(Album album)
+    public async Task<ActionResult<Album>> PostAlbum(Album album,
+        [FromServices]IUnitOfWork unityOfWork)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest();
-        }
-        
+        if (!ModelState.IsValid) return BadRequest();
         //TODO add DTO conversion here.
-        await _albumRepository.AddAsync(album);
-        if (await _albumRepository.SaveChangesAsync())
+        await _albumRepository.InsertAsync(album);
+        try
         {
+            unityOfWork.Commit();
             return CreatedAtAction(nameof(GetAlbumById), new { id = album.Id }, album);
+        }
+        catch(Exception ex) 
+            when(ex is DbUpdateException or DbUpdateConcurrencyException or OperationCanceledException)
+        {
         }
 
         return BadRequest();

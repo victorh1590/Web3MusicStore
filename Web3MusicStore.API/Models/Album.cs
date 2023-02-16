@@ -22,10 +22,10 @@ public class Album
 
   [Required]
   [ForeignKey("Fk_ArtistId")]
-  public int ArtistId { get; set; }
+  public int UserId { get; set; }
   
   [Required]
-  public Artist Artist { get; set; } = default!;
+  public User User { get; set; } = default!;
   
   public ICollection<Song>? Songs { get; set; }
 

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Web3MusicStore.API.Models;
 
-public class Artist
+public class User
 {
     [Key] public int Id { get; set; }
 
