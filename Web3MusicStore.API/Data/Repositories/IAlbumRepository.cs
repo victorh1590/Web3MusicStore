@@ -4,10 +4,10 @@ namespace Web3MusicStore.API.Data.Repositories;
 
 public interface IAlbumRepository
 {
-    Task<IEnumerable<Album>?> GetPagesAsync(
+    Task<IReadOnlyCollection<Album>> GetPagesAsync(
         int pageNumber = 1,
         int? userId = null);
-    Task<IEnumerable<Album>?> GetRandomPagesAsync(
+    Task<IReadOnlyCollection<Album>> GetRandomPagesAsync(
         int pageNumber = 1,
         Guid? guid = null
         );

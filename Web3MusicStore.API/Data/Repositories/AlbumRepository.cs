@@ -1,29 +1,30 @@
 using Microsoft.EntityFrameworkCore;
 using Web3MusicStore.API.Models;
+using CommunityToolkit.Diagnostics;
 
 namespace Web3MusicStore.API.Data.Repositories;
 
 public class AlbumRepository : IAlbumRepository
 {
-  private readonly StoreDbContext _context;
-  private readonly ILogger _logger;
+  private readonly IStoreDbContext _context;
   private const int PageSize = 20;
   private int PageSkip(int pageNumber) => (pageNumber - 1) * PageSize;
 
-  public AlbumRepository(StoreDbContext context, ILogger<RepositoryBase<Album>> logger)
+  public AlbumRepository(IStoreDbContext context)
   {
     _context = context;
-    _logger = logger;
   }
   
-  public async Task<IEnumerable<Album>?> GetPagesAsync(int pageNumber = 1, int? userId = null)
+  public async Task<IReadOnlyCollection<Album>> GetPagesAsync(int pageNumber = 1, int? userId = null)
   {
+    Guard.IsGreaterThanOrEqualTo(pageNumber, 1);
+    // if (pageNumber <= 0) return Array.Empty<Album>();
     var query = _context.Albums.AsQueryable().AsNoTracking();
     if (userId != null) query = query.Where(item => userId == item.UserId);
     return await query.Skip(PageSkip(pageNumber)).Take(PageSize).ToListAsync();
   }
 
-  public async Task<IEnumerable<Album>?>  GetRandomPagesAsync(int pageNumber = 1, Guid? guid = null)
+  public async Task<IReadOnlyCollection<Album>>  GetRandomPagesAsync(int pageNumber = 1, Guid? guid = null)
   {
     guid ??= new Guid();
 

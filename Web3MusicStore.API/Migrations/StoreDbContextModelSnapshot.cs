@@ -25,9 +25,6 @@ namespace Web3MusicStore.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("ArtistId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Cover")
                         .IsRequired()
                         .HasColumnType("NVARCHAR(500)");
@@ -42,26 +39,14 @@ namespace Web3MusicStore.API.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(65,30)");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("ArtistId");
-
-                    b.ToTable("Albums");
-                });
-
-            modelBuilder.Entity("Web3MusicStore.API.Models.Artist", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR(200)");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Artists");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Albums");
                 });
 
             modelBuilder.Entity("Web3MusicStore.API.Models.Song", b =>
@@ -87,15 +72,30 @@ namespace Web3MusicStore.API.Migrations
                     b.ToTable("Songs");
                 });
 
+            modelBuilder.Entity("Web3MusicStore.API.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR(200)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("User");
+                });
+
             modelBuilder.Entity("Web3MusicStore.API.Models.Album", b =>
                 {
-                    b.HasOne("Web3MusicStore.API.Models.Artist", "Artist")
+                    b.HasOne("Web3MusicStore.API.Models.User", "User")
                         .WithMany("Albums")
-                        .HasForeignKey("ArtistId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Artist");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Web3MusicStore.API.Models.Song", b =>
@@ -114,7 +114,7 @@ namespace Web3MusicStore.API.Migrations
                     b.Navigation("Songs");
                 });
 
-            modelBuilder.Entity("Web3MusicStore.API.Models.Artist", b =>
+            modelBuilder.Entity("Web3MusicStore.API.Models.User", b =>
                 {
                     b.Navigation("Albums");
                 });

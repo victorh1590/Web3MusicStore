@@ -455,3 +455,6 @@ $RECYCLE.BIN/
 
 # SQL Scripts
 *.sql
+
+# Migrations
+*/Migrations/

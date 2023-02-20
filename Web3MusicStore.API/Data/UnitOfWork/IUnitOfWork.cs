@@ -1,4 +1,6 @@
-﻿namespace Web3MusicStore.API.Data.UnitOfWork;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Web3MusicStore.API.Data.UnitOfWork;
 
 public interface IUnitOfWork
 {

@@ -5,7 +5,14 @@ using Web3MusicStore.API.Models;
 
 namespace Web3MusicStore.API.Data;
 
-public class StoreDbContext : DbContext
+public interface IStoreDbContext
+{
+  DbSet<Album> Albums { get; set; }
+  DbSet<User> User { get; set; }
+  DbSet<Song> Songs { get; set; }
+}
+
+public class StoreDbContext : DbContext, IStoreDbContext
 {
   public StoreDbContext(DbContextOptions<StoreDbContext> options)
     : base(options)
