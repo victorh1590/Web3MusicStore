@@ -27,9 +27,8 @@ public class AlbumController : ControllerBase
     [Route("")]
     public async Task<ActionResult> GetAlbums()
     {
-        var albums = await _albumRepository.GetRandomPagesAsync();
-        if(albums != null) return Ok(albums);
-        return UnprocessableEntity("Page requested is out of range.");
+        var albums = await _albumRepository.GetRandomPagesAsync(pageNumber: -1);
+        return Ok(albums);
     }
     
     [HttpGet]

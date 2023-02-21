@@ -19,15 +19,16 @@ public class AlbumRepository : IAlbumRepository
   {
     Guard.IsGreaterThanOrEqualTo(pageNumber, 1);
     // if (pageNumber <= 0) return Array.Empty<Album>();
-    var query = _context.Albums.AsQueryable().AsNoTracking();
+    var query = _context.Albums.AsQueryable();
     if (userId != null) query = query.Where(item => userId == item.UserId);
     return await query.Skip(PageSkip(pageNumber)).Take(PageSize).ToListAsync();
   }
 
   public async Task<IReadOnlyCollection<Album>>  GetRandomPagesAsync(int pageNumber = 1, Guid? guid = null)
   {
-    guid ??= new Guid();
+    Guard.IsGreaterThanOrEqualTo(pageNumber, 1);
 
+    guid ??= new Guid();
     return await _context.Albums
       .AsNoTracking()
       .OrderBy(item => guid)
