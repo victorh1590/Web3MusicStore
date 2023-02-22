@@ -23,21 +23,24 @@ public class AlbumRepository : IAlbumRepository
         return await query.Skip(PageSkip(pageNumber)).Take(PageSize).ToListAsync();
     }
 
-    public async Task<IReadOnlyCollection<Album>> GetRandomPagesAsync(int pageNumber = 1, Guid? seed = null)
+    public async Task<Tuple<IReadOnlyCollection<Album>, Guid>> GetRandomPagesAsync(int pageNumber = 1, Guid? seed = null)
     {
         Guard.IsGreaterThanOrEqualTo(pageNumber, 1);
-
-        seed ??= Guid.NewGuid();
-        var rand = new Random(seed.GetHashCode());
+        
+        // seed ??= Guid.NewGuid();
+        var randSeed = seed ?? Guid.NewGuid();
+        
+        var rand = new Random(randSeed.GetHashCode());
         for (var i = 0; i < PageSkip(pageNumber); i++) 
             rand.Next();
 
-        return await _context.Albums
+        return new Tuple<IReadOnlyCollection<Album>, Guid>
+        (await _context.Albums
             .AsNoTracking()
             .OrderBy(item => rand.Next())
             .Skip(PageSkip(pageNumber))
             .Take(PageSize)
-            .ToListAsync();
+            .ToListAsync(), randSeed);
     }
 
     public async Task<Album?> FindById(int albumId = 0)
