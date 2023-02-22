@@ -10,14 +10,10 @@ namespace Web3MusicStore.API.Controllers;
 [Route("api/[controller]")]
 public class AlbumController : ControllerBase
 {
-    
-    private readonly ILogger<AlbumController> _logger;
-
     private readonly IAlbumRepository _albumRepository;
 
-    public AlbumController(ILogger<AlbumController> logger, IAlbumRepository albumRepository)
+    public AlbumController(IAlbumRepository albumRepository)
     {
-        _logger = logger;
         _albumRepository = albumRepository;
     }
     
@@ -27,7 +23,7 @@ public class AlbumController : ControllerBase
     [Route("")]
     public async Task<ActionResult> GetAlbums()
     {
-        var albums = await _albumRepository.GetRandomPagesAsync(pageNumber: -1);
+        var albums = await _albumRepository.GetRandomPagesAsync();
         return Ok(albums);
     }
     
