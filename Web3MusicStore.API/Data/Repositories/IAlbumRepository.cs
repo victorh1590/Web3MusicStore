@@ -15,6 +15,6 @@ public interface IAlbumRepository
     Task InsertAsync(Album album);
     void Update(Album album);
     void Remove(Album album);
-    void RemoveByIdAsync(int albumId);
+    // void RemoveByIdAsync(int albumId);
     void RemoveRange(IEnumerable<Album> albums);
 }

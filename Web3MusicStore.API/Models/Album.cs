@@ -26,7 +26,7 @@ public class Album
   
   [Required]
   public User User { get; set; } = default!;
-  
+
   public ICollection<Song>? Songs { get; set; }
 
   [Required]

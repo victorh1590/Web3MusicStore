@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Web3MusicStore.API.Models;
 using CommunityToolkit.Diagnostics;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Web3MusicStore.API.Data.Repositories;
 
@@ -63,11 +64,11 @@ public class AlbumRepository : IAlbumRepository
         _context.Albums.Remove(album);
     }
 
-    public async void RemoveByIdAsync(int albumId)
-    {
-        var album = await _context.Albums.FindAsync(albumId);
-        if (album != null) _context.Albums.Remove(album);
-    }
+    // public async void RemoveByIdAsync(int albumId)
+    // {
+    //     var album = await _context.Albums.FindAsync(albumId);
+    //     if (album != null) _context.Albums.Remove(album);
+    // }
 
     public void RemoveRange(IEnumerable<Album> albums)
     {

@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Web3MusicStore.API.Middlewares;
 
@@ -40,7 +41,10 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
             {
                 context.Response.StatusCode = ex switch
                 {
-                    ArgumentException => (int)HttpStatusCode.BadRequest,
+                    ArgumentException 
+                        or DbUpdateException 
+                        or DbUpdateConcurrencyException => (int)HttpStatusCode.BadRequest,
+                    OperationCanceledException => (int)HttpStatusCode.ServiceUnavailable,
                     _ => (int)HttpStatusCode.InternalServerError
                 };
 

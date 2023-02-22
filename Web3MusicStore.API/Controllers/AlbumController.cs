@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using CommunityToolkit.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 using Web3MusicStore.API.Data.Repositories;
 using Web3MusicStore.API.Data.UnitOfWork;
 using Web3MusicStore.API.Models;
@@ -38,22 +38,49 @@ public class AlbumController : ControllerBase
 
     [HttpPost]
     [Route("")]
-    public async Task<ActionResult<Album>> PostAlbum(Album album,
+    public async Task<ActionResult> PostAlbum(
+        [FromBody]Album album,
         [FromServices]IUnitOfWork unityOfWork)
     {
         if (!ModelState.IsValid) return BadRequest();
         //TODO add DTO conversion here.
         await _albumRepository.InsertAsync(album);
-        try
-        {
-            unityOfWork.Commit();
-            return CreatedAtAction(nameof(GetAlbumById), new { id = album.Id }, album);
-        }
-        catch(Exception ex) 
-            when(ex is DbUpdateException or DbUpdateConcurrencyException or OperationCanceledException)
-        {
-        }
+        // try
+        // {
+        unityOfWork.Commit();
+        return CreatedAtAction(nameof(GetAlbumById), new { id = album.Id }, album);
+        // }
+        // catch(Exception ex) 
+        //     when(ex is DbUpdateException or DbUpdateConcurrencyException or OperationCanceledException)
+        // {
+        // }
+        //
+        // return BadRequest();
+    }
 
-        return BadRequest();
+    [HttpDelete]
+    [Route("{id:int}")]
+    public async Task<ActionResult> DeleteAlbum(int id,
+        [FromServices]IUnitOfWork unityOfWork)
+    {
+        var album = await _albumRepository.FindById(id);
+        if (album == null) return NotFound();
+        _albumRepository.Remove(album);
+        unityOfWork.Commit();
+        return NoContent();
+    }
+
+    [HttpPut]
+    [Route("{id:int}")]
+    public async Task<ActionResult> UpdateAlbum(int id, 
+        [FromBody] Album album,
+        [FromServices] IUnitOfWork unitOfWork)
+    {
+        Guard.IsTrue(album.Id == id);
+        var item = await _albumRepository.FindById(id);
+        if (item == null) return NotFound();
+        _albumRepository.Update(album);
+        unitOfWork.Commit();
+        return NoContent();
     }
 }
