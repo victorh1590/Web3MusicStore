@@ -27,7 +27,7 @@ public class Album
   [Required]
   public User User { get; set; } = default!;
 
-  public ICollection<Song>? Songs { get; set; }
+  public ICollection<Song> Songs { get; set; } = default!;
 
   [Required]
   public decimal Price { get; set; }

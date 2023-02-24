@@ -28,11 +28,11 @@ public partial class AlbumRepositoryTests
         _mockDbContext
             .Setup(context => context.Albums)
             .Returns(dbSet);
-        _repository = new AlbumRepository(_mockDbContext.Object);
+        _repository = new StoreRepository(_mockDbContext.Object);
 
         // Act
-        var results1 = await _repository.GetRandomPagesAsync();
-        var results2 = await _repository.GetRandomPagesAsync();
+        var results1 = await _repository.GetRandomAlbumPagesAsync();
+        var results2 = await _repository.GetRandomAlbumPagesAsync();
         
         // Assert
         Assert.Multiple(() =>
@@ -67,11 +67,11 @@ public partial class AlbumRepositoryTests
         _mockDbContext
             .Setup(context => context.Albums)
             .Returns(dbSet);
-        _repository = new AlbumRepository(_mockDbContext.Object);
+        _repository = new StoreRepository(_mockDbContext.Object);
 
         // Act
-        var results1 = await _repository.GetRandomPagesAsync();
-        var results2 = await _repository.GetRandomPagesAsync();
+        var results1 = await _repository.GetRandomAlbumPagesAsync();
+        var results2 = await _repository.GetRandomAlbumPagesAsync();
         
         // Assert
         CollectionAssert.AllItemsAreUnique(results1);

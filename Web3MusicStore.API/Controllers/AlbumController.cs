@@ -25,7 +25,7 @@ public class AlbumController : ControllerBase
     [Route("")]
     public async Task<ActionResult> GetAlbums()
     {
-        var albums = await _albumRepository.GetRandomPagesAsync();
+        var albums = await _albumRepository.GetRandomAlbumPagesAsync();
         return Ok(albums);
     }
     
@@ -33,7 +33,7 @@ public class AlbumController : ControllerBase
     [Route("{id:int}")]
     public async Task<ActionResult> GetAlbumById(int id)
     {
-        var album = await _albumRepository.FindById(id);
+        var album = await _albumRepository.FindAlbumById(id);
         if (album != null) return Ok(album);
         return NotFound();
     }
@@ -45,7 +45,7 @@ public class AlbumController : ControllerBase
     {
         if (!ModelState.IsValid) return BadRequest();
         //TODO add DTO conversion here.
-        await _albumRepository.InsertAsync(album);
+        await _albumRepository.InsertAlbumAsync(album);
         // try
         // {
         _unitOfWork.Commit();
@@ -63,9 +63,9 @@ public class AlbumController : ControllerBase
     [Route("{id:int}")]
     public async Task<ActionResult> DeleteAlbum(int id)
     {
-        var album = await _albumRepository.FindById(id);
+        var album = await _albumRepository.FindAlbumById(id);
         if (album == null) return NotFound();
-        _albumRepository.Remove(album);
+        _albumRepository.RemoveAlbum(album);
         _unitOfWork.Commit();
         return NoContent();
     }
@@ -76,9 +76,9 @@ public class AlbumController : ControllerBase
         [FromBody] Album album)
     {
         Guard.IsTrue(album.Id == id);
-        var item = await _albumRepository.FindById(id);
+        var item = await _albumRepository.FindAlbumById(id);
         if (item == null) return NotFound();
-        _albumRepository.Update(album);
+        _albumRepository.UpdateAlbum(album);
         _unitOfWork.Commit();
         return NoContent();
     }

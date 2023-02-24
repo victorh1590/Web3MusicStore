@@ -4,14 +4,14 @@ namespace Web3MusicStore.API.Data.Repositories;
 
 public interface IAlbumRepository
 {
-    Task<IReadOnlyCollection<Album>> GetPagesAsync(
+    Task<IReadOnlyCollection<Album>> GetAlbumPagesAsync(
         int pageNumber = 1,
         int? userId = null);
-    Task<IReadOnlyCollection<Album>> GetRandomPagesAsync();
-    Task<Album?> FindById(int albumId = 0);
-    Task InsertAsync(Album album);
-    void Update(Album album);
-    void Remove(Album album);
-    // void RemoveByIdAsync(int albumId);
-    void RemoveRange(IEnumerable<Album> albums);
+    Task<IReadOnlyCollection<Album>> GetRandomAlbumPagesAsync();
+    Task<Album?> FindAlbumById(int albumId);
+    Task InsertAlbumAsync(Album album);
+    void UpdateAlbum(Album album);
+    void RemoveAlbum(Album album);
+    // Task RemoveAlbumByIdAsync(int albumId);
+    void RemoveAlbumRange(IEnumerable<Album> albums);
 }

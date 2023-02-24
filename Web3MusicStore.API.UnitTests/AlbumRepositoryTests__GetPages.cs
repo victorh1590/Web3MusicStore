@@ -25,10 +25,10 @@ public partial class AlbumRepositoryTests
         _mockDbContext
             .Setup(context => context.Albums)
             .Returns(_testSet1.AsQueryable().BuildMockDbSet().Object);
-        _repository = new AlbumRepository(_mockDbContext.Object);
+        _repository = new StoreRepository(_mockDbContext.Object);
 
         // Act
-        var result = await _repository.GetPagesAsync(pageNumber, userId);
+        var result = await _repository.GetAlbumPagesAsync(pageNumber, userId);
 
         // Assert
         Assert.That(result, Has.Count.EqualTo(expectedAlbumIds.Length));
@@ -56,10 +56,10 @@ public partial class AlbumRepositoryTests
         _mockDbContext
             .Setup(context => context.Albums)
             .Returns(albums.AsQueryable().BuildMockDbSet().Object);
-        _repository = new AlbumRepository(_mockDbContext.Object);
+        _repository = new StoreRepository(_mockDbContext.Object);
 
         // Act
-        var result = await _repository.GetPagesAsync(pageNumber);
+        var result = await _repository.GetAlbumPagesAsync(pageNumber);
         
         // Assert
         Assert.That(result, Has.Count.EqualTo(expectedAlbums.Count));
@@ -80,11 +80,11 @@ public partial class AlbumRepositoryTests
         _mockDbContext
             .Setup(context => context.Albums)
             .Returns(albums.AsQueryable().BuildMockDbSet().Object);
-        _repository = new AlbumRepository(_mockDbContext.Object);
+        _repository = new StoreRepository(_mockDbContext.Object);
         
         // Assert
         Assert.That(async Task<IReadOnlyCollection<Album>>()
-                => await _repository.GetPagesAsync(pageNumber),
+                => await _repository.GetAlbumPagesAsync(pageNumber),
             Throws.Exception.TypeOf<ArgumentOutOfRangeException>());
     }
 }

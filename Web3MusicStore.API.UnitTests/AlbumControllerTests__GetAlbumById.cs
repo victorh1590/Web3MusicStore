@@ -11,7 +11,7 @@ public partial class AlbumControllerTests
     public async Task GetAlbumById_Returns_Ok_When_Album_Found()
     {
         // Arrange         
-        _repository.Setup(repo => repo.FindById(5)).ReturnsAsync(new Album { Id = 5, Name = "Test Album" });         
+        _repository.Setup(repo => repo.FindAlbumById(5)).ReturnsAsync(new Album { Id = 5, Name = "Test Album" });         
         _controller = new AlbumController(_repository.Object, _unitOfWork.Object);                  
 
         // Act
@@ -34,7 +34,7 @@ public partial class AlbumControllerTests
     public async Task GetAlbumById_Returns_NotFound_When_Id_Invalid()
     {
         // Arrange         
-        _repository.Setup(repo => repo.FindById(-1)).ReturnsAsync((Album?)null);  
+        _repository.Setup(repo => repo.FindAlbumById(-1)).ReturnsAsync((Album?)null);  
         _controller = new AlbumController(_repository.Object, _unitOfWork.Object);
 
         // Act         

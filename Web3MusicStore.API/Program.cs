@@ -14,7 +14,7 @@ builder.Services.AddDbContext<IStoreDbContext, StoreDbContext>(options =>
     }
 );
 
-builder.Services.AddScoped<IAlbumRepository, AlbumRepository>();
+builder.Services.AddScoped<IAlbumRepository, StoreRepository>();
 builder.Services.AddTransient<IUnitOfWork, StoreUnitOfWork>();
 
 builder.Services.AddTransient<GlobalExceptionHandlingMiddleware>();
