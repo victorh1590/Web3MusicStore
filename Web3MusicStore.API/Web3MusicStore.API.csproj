@@ -21,4 +21,8 @@
   <ItemGroup>
     <Compile Remove="Controllers\WeatherForecastController.cs" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="simple_logging_output.txt" />
+  </ItemGroup>
 </Project>

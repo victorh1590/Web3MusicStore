@@ -12,7 +12,7 @@ public partial class AlbumRepositoryTests
         var exampleGuid = new Guid("8cdaa2d0-f7a7-4635-9a44-5a941d9282af");
         Console.WriteLine(exampleGuid);
         Console.WriteLine(exampleGuid.GetHashCode());
-
+        
         // Arrange
         var dbSet = _testSet1.AsQueryable().BuildMockDbSet().Object;
         
@@ -22,8 +22,8 @@ public partial class AlbumRepositoryTests
         _repository = new AlbumRepository(_mockDbContext.Object);
 
         // Act
-        var (expectedResults, _) = await _repository.GetRandomPagesAsync(pageNumber, exampleGuid);
-        var (result, _) = await _repository.GetRandomPagesAsync(pageNumber, exampleGuid);
+        var expectedResults = await _repository.GetRandomPagesAsync();
+        var result = await _repository.GetRandomPagesAsync();
         // Assert
         Assert.Multiple(() =>
         {
@@ -55,7 +55,41 @@ public partial class AlbumRepositoryTests
             Assert.That(results1, Has.Count.EqualTo(20));
             Assert.That(results2, Has.Count.EqualTo(20));
         });
+
         CollectionAssert.AreNotEquivalent(results1, results2);
         Assert.That(result1Guid, Is.Not.EqualTo(result2Guid));
+    }
+    
+    
+    [Test]
+    public async Task GetRandomPagesAsync_All_Elements_Returned_Are_Unique()
+    {
+        var seed = Guid.NewGuid();
+        // Arrange
+        var dbSet = _testSet1.AsQueryable().BuildMockDbSet().Object;
+        
+        _mockDbContext
+            .Setup(context => context.Albums)
+            .Returns(dbSet);
+        _repository = new AlbumRepository(_mockDbContext.Object);
+
+        // Act
+        var (results1, result1Guid) = await _repository.GetRandomPagesAsync(1, seed);
+        var (results2, result2Guid) = await _repository.GetRandomPagesAsync(2, seed);
+        
+        foreach (var item in results1)
+        {
+            Console.WriteLine(item.Id);
+        }
+        Console.WriteLine("\n");
+        foreach (var item in results2)
+        {
+            Console.WriteLine(item.Id);
+        }
+        // Assert
+        Assert.That(result2Guid, Is.EqualTo(result1Guid)); //Checking if the Guids returned are equal.
+        CollectionAssert.AllItemsAreUnique(results1);
+        CollectionAssert.AllItemsAreUnique(results2);
+        CollectionAssert.IsEmpty(results1.Intersect(results2));
     }
 }
