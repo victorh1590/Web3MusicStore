@@ -17,12 +17,4 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Controllers\WeatherForecastController.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="simple_logging_output.txt" />
-  </ItemGroup>
 </Project>
