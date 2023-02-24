@@ -2,7 +2,6 @@ using Web3MusicStore.API.Data.Repositories;
 using Web3MusicStore.API.Models;
 using Moq;
 using Web3MusicStore.API.Data;
-using MockQueryable.Moq;
 
 namespace Web3MusicStore.API.UnitTests;
 

@@ -12,7 +12,7 @@ public partial class AlbumControllerTests
     {
         // Arrange         
         _repository.Setup(repo => repo.FindById(5)).ReturnsAsync(new Album { Id = 5, Name = "Test Album" });         
-        _controller = new AlbumController(_repository.Object);                  
+        _controller = new AlbumController(_repository.Object, _unitOfWork.Object);                  
 
         // Act
         var result = await _controller.GetAlbumById(5);
@@ -35,7 +35,7 @@ public partial class AlbumControllerTests
     {
         // Arrange         
         _repository.Setup(repo => repo.FindById(-1)).ReturnsAsync((Album?)null);  
-        _controller = new AlbumController(_repository.Object);
+        _controller = new AlbumController(_repository.Object, _unitOfWork.Object);
 
         // Act         
         var result = await _controller.GetAlbumById(-1);          

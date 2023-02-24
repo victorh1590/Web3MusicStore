@@ -11,10 +11,12 @@ namespace Web3MusicStore.API.Controllers;
 public class AlbumController : ControllerBase
 {
     private readonly IAlbumRepository _albumRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public AlbumController(IAlbumRepository albumRepository)
+    public AlbumController(IAlbumRepository albumRepository, IUnitOfWork unitOfWork)
     {
         _albumRepository = albumRepository;
+        _unitOfWork = unitOfWork;
     }
     
     //TODO Replace return with DTOs.
@@ -39,15 +41,14 @@ public class AlbumController : ControllerBase
     [HttpPost]
     [Route("")]
     public async Task<ActionResult> PostAlbum(
-        [FromBody]Album album,
-        [FromServices]IUnitOfWork unityOfWork)
+        [FromBody]Album album)
     {
         if (!ModelState.IsValid) return BadRequest();
         //TODO add DTO conversion here.
         await _albumRepository.InsertAsync(album);
         // try
         // {
-        unityOfWork.Commit();
+        _unitOfWork.Commit();
         return CreatedAtAction(nameof(GetAlbumById), new { id = album.Id }, album);
         // }
         // catch(Exception ex) 
@@ -60,27 +61,25 @@ public class AlbumController : ControllerBase
 
     [HttpDelete]
     [Route("{id:int}")]
-    public async Task<ActionResult> DeleteAlbum(int id,
-        [FromServices]IUnitOfWork unityOfWork)
+    public async Task<ActionResult> DeleteAlbum(int id)
     {
         var album = await _albumRepository.FindById(id);
         if (album == null) return NotFound();
         _albumRepository.Remove(album);
-        unityOfWork.Commit();
+        _unitOfWork.Commit();
         return NoContent();
     }
 
     [HttpPut]
     [Route("{id:int}")]
     public async Task<ActionResult> UpdateAlbum(int id, 
-        [FromBody] Album album,
-        [FromServices] IUnitOfWork unitOfWork)
+        [FromBody] Album album)
     {
         Guard.IsTrue(album.Id == id);
         var item = await _albumRepository.FindById(id);
         if (item == null) return NotFound();
         _albumRepository.Update(album);
-        unitOfWork.Commit();
+        _unitOfWork.Commit();
         return NoContent();
     }
 }

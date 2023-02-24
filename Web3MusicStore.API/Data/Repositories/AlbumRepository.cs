@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Web3MusicStore.API.Models;
 using CommunityToolkit.Diagnostics;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Web3MusicStore.API.Data.Repositories;
 
@@ -27,8 +26,7 @@ public class AlbumRepository : IAlbumRepository
     public async Task<IReadOnlyCollection<Album>> GetRandomPagesAsync()
     {
         const int pageCount = 5;
-        var seed = Guid.NewGuid();
-        var rand = new Random(seed.GetHashCode());
+        var rand = new Random(Guid.NewGuid().GetHashCode());
         return await _context.Albums
             .AsNoTracking()
             .OrderBy(item => rand.Next())

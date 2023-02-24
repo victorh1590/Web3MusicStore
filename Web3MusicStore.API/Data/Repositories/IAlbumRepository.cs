@@ -7,10 +7,6 @@ public interface IAlbumRepository
     Task<IReadOnlyCollection<Album>> GetPagesAsync(
         int pageNumber = 1,
         int? userId = null);
-    // Task<Tuple<IReadOnlyCollection<Album>, Guid>> GetRandomPagesAsync(
-    //     int pageNumber = 1,
-    //     Guid? guid = null
-    //     );
     Task<IReadOnlyCollection<Album>> GetRandomPagesAsync();
     Task<Album?> FindById(int albumId = 0);
     Task InsertAsync(Album album);
