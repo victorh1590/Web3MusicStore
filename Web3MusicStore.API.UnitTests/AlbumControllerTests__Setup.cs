@@ -9,7 +9,7 @@ namespace Web3MusicStore.API.UnitTests;
 [TestFixture]
 public partial class AlbumControllerTests
 {
-    private Mock<IAlbumRepository> _repository = default!;
+    private Mock<StoreRepository> _repository = default!;
     private Mock<IUnitOfWork> _unitOfWork = default!;
     private AlbumController _controller = default!;
 
@@ -28,7 +28,7 @@ public partial class AlbumControllerTests
     [SetUp]
     public void Setup()
     {
-        _repository = new Mock<IAlbumRepository>();
+        _repository = new Mock<StoreRepository>();
         _unitOfWork = new Mock<IUnitOfWork>();
     }
 }

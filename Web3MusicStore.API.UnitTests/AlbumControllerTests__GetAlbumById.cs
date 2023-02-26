@@ -7,11 +7,12 @@ namespace Web3MusicStore.API.UnitTests;
 
 public partial class AlbumControllerTests
 {
-    [Test]     
+    [Test]
     public async Task GetAlbumById_Returns_Ok_When_Album_Found()
     {
         // Arrange         
-        _repository.Setup(repo => repo.FindAlbumById(5)).ReturnsAsync(new Album { Id = 5, Name = "Test Album" });         
+        _repository.Setup(repo => repo.FindAlbumById(5))
+            .ReturnsAsync(new Album { Id = 5, Name = "Test Album" });         
         _controller = new AlbumController(_repository.Object, _unitOfWork.Object);                  
 
         // Act

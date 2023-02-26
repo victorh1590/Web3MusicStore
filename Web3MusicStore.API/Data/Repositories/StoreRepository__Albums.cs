@@ -4,19 +4,19 @@ using CommunityToolkit.Diagnostics;
 
 namespace Web3MusicStore.API.Data.Repositories;
 
-public partial class StoreRepository : IAlbumRepository
+public partial class StoreRepository : IAlbumRepository 
 {
     public async Task<IReadOnlyCollection<Album>> GetAlbumPagesAsync(int pageNumber = 1, int? userId = null)
     {
-        Guard.IsGreaterThanOrEqualTo(pageNumber, 1);
-        var query = _context.Albums.AsQueryable();
-        if (userId != null) query = query.Where(item => userId == item.UserId);
+        Guard.IsGreaterThanOrEqualTo(pageNumber, 1); 
+        var query = _context.Albums.AsQueryable(); 
+        if (userId != null) query = query.Where(item => userId == item.UserId); 
         return await query.Skip(PageSkip(pageNumber)).Take(PageSize).ToListAsync();
-    }
-
-    public async Task<IReadOnlyCollection<Album>> GetRandomAlbumPagesAsync()
-    {
-        const int pageCount = 5;
+    } 
+    
+    public async Task<IReadOnlyCollection<Album>> GetRandomAlbumPagesAsync() 
+    { 
+        const int pageCount = 5; 
         var rand = new Random(Guid.NewGuid().GetHashCode());
         return await _context.Albums
             .AsNoTracking()
